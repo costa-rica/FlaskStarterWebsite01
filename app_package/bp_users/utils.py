@@ -17,7 +17,7 @@ from logging.handlers import RotatingFileHandler
 import pandas as pd
 from datetime import datetime
 import csv
-from app_package._common.utilities import wrap_up_session, custom_logger
+from app_package._common.utilities import custom_logger
 
 logger_bp_users = custom_logger('bp_users.log')
 

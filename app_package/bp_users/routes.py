@@ -11,13 +11,13 @@ from app_package._common.utilities import custom_logger
 import os
 import json
 # from ws_models import sess, engine, text, Users
-from fsw_models import engine, Session, text, Users
+from fsw_models import engine, DatabaseSession, text, Users
 # from app_package.bp_users.utils import  create_shortname_list, api_url
 from app_package.bp_users.utils import send_reset_email, send_confirm_email
 import datetime
 import requests
 import zipfile
-from app_package._common.utilities import wrap_up_session, custom_logger
+from app_package._common.utilities import custom_logger
 
 
 logger_bp_users = custom_logger('bp_users.log')
@@ -28,7 +28,7 @@ bp_users = Blueprint('bp_users', __name__)
 def before_request():
     print("-- def before_request() --")
     # Assign a new session to a global `g` object, accessible during the whole request
-    g.db_session = Session()
+    g.db_session = DatabaseSession()
     print("* created a g.db_session *")
 
 
@@ -72,7 +72,7 @@ def login():
 @bp_users.route('/register', methods = ['GET', 'POST'])
 def register():
     logger_bp_users.info('- in register -')
-    # db_session = Session()
+    # db_session = DatabaseSession()
     db_session = g.db_session
     if current_user.is_authenticated:
         return redirect(url_for('bp_main.home'))
@@ -120,7 +120,7 @@ def logout():
 def request_reset_password():
 
     logger_bp_users.info('- in register -')
-    db_session = Session()
+    db_session = DatabaseSession()
 
     page_name = 'Request Password Change'
     if current_user.is_authenticated:
@@ -141,7 +141,7 @@ def request_reset_password():
 def reset_password():
 
     logger_bp_users.info('- in reset_password with token -')
-    db_session = Session()
+    db_session = DatabaseSession()
 
     token = request.args.get('token')
     user = Users.verify_reset_token(token)

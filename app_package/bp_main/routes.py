@@ -1,7 +1,7 @@
 from flask import Blueprint
 from flask import render_template, current_app, send_from_directory
 import os
-from app_package._common.utilities import wrap_up_session, custom_logger
+from app_package._common.utilities import custom_logger
 import datetime
 from flask_login import login_required, login_user, logout_user, current_user
 

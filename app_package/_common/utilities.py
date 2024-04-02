@@ -1,4 +1,4 @@
-from fsw_models import engine, Session, text, Users
+from fsw_models import engine, DatabaseSession, text, Users
 import logging
 from logging.handlers import RotatingFileHandler
 import os
@@ -15,7 +15,7 @@ login_manager.login_message_category = 'info'
 def load_user(user_id):
     print("-- def load_user(user_id) --")
     # NOTE: This could be a problem we are usign this g.db_session cavalierly her
-    g.db_session = Session()
+    g.db_session = DatabaseSession()
     user = g.db_session.query(Users).filter_by(id = user_id).first()
     print("* created a g.db_session *")
     return user
@@ -31,20 +31,6 @@ def teardown_appcontext(exception=None):
         print("----- db_session.close() -----")
         db_session.close()
 
-
-def wrap_up_session(db_session, custom_logger):
-    custom_logger.info("- accessed wrap_up_session -")
-    try:
-        # perform some database operations
-        db_session.commit()
-        custom_logger.info("- perfomed: db_session.commit() -")
-    except:
-        db_session.rollback()  # Roll back the transaction on error
-        custom_logger.info("- perfomed: db_session.rollback() -")
-        raise
-    finally:
-        db_session.close()  # Ensure the session is closed in any case
-        custom_logger.info("- perfomed: db_session.close() -")
 
 
 def custom_logger(logger_filename):
@@ -108,4 +94,23 @@ def custom_logger_init():
 # timezone 
 def timetz(*args):
     return datetime.now(timezone('Europe/Paris') ).timetuple()
+
+
+
+# #####################################
+# ## OBE due to teardown_appcontext ###
+# #####################################
+# def wrap_up_session(db_session, custom_logger):
+#     custom_logger.info("- accessed wrap_up_session -")
+#     try:
+#         # perform some database operations
+#         db_session.commit()
+#         custom_logger.info("- perfomed: db_session.commit() -")
+#     except:
+#         db_session.rollback()  # Roll back the transaction on error
+#         custom_logger.info("- perfomed: db_session.rollback() -")
+#         raise
+#     finally:
+#         db_session.close()  # Ensure the session is closed in any case
+#         custom_logger.info("- perfomed: db_session.close() -")
 

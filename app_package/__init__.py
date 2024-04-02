@@ -43,8 +43,8 @@ def create_app(config_for_flask = config):
 
 
     ############################################################################
-    ## create folders for DB_AUXILIARY
-    create_folder(config_for_flask.DB_AUXILIARY)
+    ## create folders for PROJECT_RESOURCES
+    create_folder(config_for_flask.PROJECT_RESOURCES)
     create_folder(config_for_flask.DIR_LOGS)
     # website files
     create_folder(config_for_flask.WEBSITE_FILES)
