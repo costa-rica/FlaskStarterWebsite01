@@ -97,20 +97,20 @@ def timetz(*args):
 
 
 
-# #####################################
-# ## OBE due to teardown_appcontext ###
-# #####################################
-# def wrap_up_session(db_session, custom_logger):
-#     custom_logger.info("- accessed wrap_up_session -")
-#     try:
-#         # perform some database operations
-#         db_session.commit()
-#         custom_logger.info("- perfomed: db_session.commit() -")
-#     except:
-#         db_session.rollback()  # Roll back the transaction on error
-#         custom_logger.info("- perfomed: db_session.rollback() -")
-#         raise
-#     finally:
-#         db_session.close()  # Ensure the session is closed in any case
-#         custom_logger.info("- perfomed: db_session.close() -")
+#####################################
+## OBE due to teardown_appcontext ###
+#####################################
+def wrap_up_session(db_session, custom_logger):
+    custom_logger.info("- accessed wrap_up_session -")
+    try:
+        # perform some database operations
+        db_session.commit()
+        custom_logger.info("- perfomed: db_session.commit() -")
+    except:
+        db_session.rollback()  # Roll back the transaction on error
+        custom_logger.info("- perfomed: db_session.rollback() -")
+        raise
+    finally:
+        db_session.close()  # Ensure the session is closed in any case
+        custom_logger.info("- perfomed: db_session.close() -")
 

@@ -17,7 +17,7 @@ from app_package.bp_users.utils import send_reset_email, send_confirm_email
 import datetime
 import requests
 import zipfile
-from app_package._common.utilities import custom_logger
+from app_package._common.utilities import custom_logger, wrap_up_session
 
 
 logger_bp_users = custom_logger('bp_users.log')
@@ -131,15 +131,18 @@ def request_reset_password():
         formDict = request.form.to_dict()
         email = formDict.get('email')
         user = db_session.query(Users).filter_by(email=email).first()
+        
+        if user:
+            send_reset_email(user)
+        
         wrap_up_session(db_session, logger_bp_users)
-
         # return redirect(url_for('bp_users.reset_password'))
         return redirect(url_for('bp_users.request_reset_password'))
     return render_template('users/reset_request.html', page_name = page_name)
 
 @bp_users.route('/reset_password', methods = ["GET", "POST"])
 def reset_password():
-
+    page_name = "Reset Password"
     logger_bp_users.info('- in reset_password with token -')
     db_session = DatabaseSession()
 
@@ -152,17 +155,12 @@ def reset_password():
         return redirect(url_for('bp_users.reset_password'))
     if request.method == 'POST':
         formDict = request.form.to_dict()
-        email = formDict.get('email')
-        user = db_session.query(Users).filter_by(email=email).first()
+        # new_password = formDict.get('password_text')
+        new_user_obj = db_session.get(Users,user.id)
+        hash_pw = bcrypt.hashpw(formDict.get('password_text').encode(), salt)
+        new_user_obj.password = hash_pw
         wrap_up_session(db_session, logger_bp_users)
-        if user:
-        # send_reset_email(user)
-            logger_bp_users.info('Email reaquested to reset: ', email)
-            send_reset_email(user)
-            flash('Email has been sent with instructions to reset your password','info')
-            # return redirect(url_for('bp_users.login'))
-        else:
-            flash('Email has not been registered with What Sticks','warning')
 
-        return redirect(url_for('bp_users.reset_password'))
+
+        return redirect(url_for('bp_users.login'))
     return render_template('users/reset_request.html', page_name = page_name)
