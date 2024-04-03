@@ -155,7 +155,6 @@ def reset_password():
         return redirect(url_for('bp_users.reset_password'))
     if request.method == 'POST':
         formDict = request.form.to_dict()
-        # new_password = formDict.get('password_text')
         new_user_obj = db_session.get(Users,user.id)
         hash_pw = bcrypt.hashpw(formDict.get('password_text').encode(), salt)
         new_user_obj.password = hash_pw
