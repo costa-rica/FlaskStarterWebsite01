@@ -41,18 +41,23 @@ def create_app(config_for_flask = config):
     login_manager.init_app(app)
     mail.init_app(app)
 
-
     ############################################################################
-    ## create folders for PROJECT_RESOURCES
-    create_folder(config_for_flask.PROJECT_RESOURCES)
-    create_folder(config_for_flask.DIR_LOGS)
-    # website files
-    create_folder(config_for_flask.WEBSITE_FILES)
-    create_folder(config_for_flask.DIR_WEBSITE_IMAGES)
-    create_folder(config_for_flask.DIR_WEBSITE_VIDEOS)
     # database
-    create_folder(config_for_flask.DATABASE_HELPERS)
-    create_folder(config_for_flask.DB_UPLOAD)
+    create_folder(config_for_flask.DATABASE_ROOT)
+    create_folder(config_for_flask.DIR_DB_UPLOAD)
+    # create folders for PROJECT_RESOURCES
+    create_folder(config_for_flask.PROJECT_RESOURCES_ROOT)
+    ## website folders
+    create_folder(config_for_flask.DIR_ASSETS)
+    create_folder(config_for_flask.DIR_ASSETS_IMAGES)
+    create_folder(config_for_flask.DIR_ASSETS_FAVICONS)
+    ## blog folders
+    create_folder(config_for_flask.DIR_BLOG)
+    create_folder(config_for_flask.DIR_BLOG_POSTS)
+    ## logs
+    create_folder(config_for_flask.DIR_LOGS)
+    ## media - all other videos and images
+    create_folder(config_for_flask.DIR_MEDIA)
     ############################################################################
     # Build MySQL database
     # Base.metadata.create_all(engine)

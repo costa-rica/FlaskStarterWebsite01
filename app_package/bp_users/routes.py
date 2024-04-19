@@ -26,15 +26,24 @@ bp_users = Blueprint('bp_users', __name__)
 
 @bp_users.before_request
 def before_request():
-    print("-- def before_request() --")
+    logger_bp_users.info("-- def before_request() --")
     # Assign a new session to a global `g` object, accessible during the whole request
     g.db_session = DatabaseSession()
-    print("* created a g.db_session *")
+    
+    # Use getattr to safely access g.referrer, defaulting to None if it's not set
+    if getattr(g, 'referrer', None) is None:
+        if request.referrer:
+            g.referrer = request.referrer
+        else:
+            g.referrer = "No referrer"
+    
+    logger_bp_users.info("-- def before_request() END --")
 
 
 @bp_users.route('/login', methods = ['GET', 'POST'])
 def login():
     logger_bp_users.info('- in login -')
+    logger_bp_users.info(f'- g.referrer: {g.referrer} -')
     db_session = g.db_session
 
     if current_user.is_authenticated:
@@ -72,6 +81,7 @@ def login():
 @bp_users.route('/register', methods = ['GET', 'POST'])
 def register():
     logger_bp_users.info('- in register -')
+    logger_bp_users.info(f'- g.referrer: {g.referrer} -')
     # db_session = DatabaseSession()
     db_session = g.db_session
     if current_user.is_authenticated:
@@ -113,6 +123,7 @@ def register():
 
 @bp_users.route('/logout')
 def logout():
+    logger_bp_users.info(f'- g.referrer: {g.referrer} -')
     logout_user()
     return redirect(url_for('bp_main.home'))
 
