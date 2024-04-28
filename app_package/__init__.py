@@ -1,12 +1,8 @@
 from flask import Flask
-# from .._common.config import config
 from ._common.config import config
 import os
-# import logging
-# from logging.handlers import RotatingFileHandler
 from pytz import timezone
 from datetime import datetime
-# from ws_models import Base, engine, login_manager
 from fsw_models import Base, engine
 from ._common.utilities import login_manager, custom_logger_init, teardown_appcontext
 from flask_mail import Mail
@@ -66,13 +62,10 @@ def create_app(config_for_flask = config):
 
     from app_package.bp_main.routes import bp_main
     from app_package.bp_users.routes import bp_users
-    # from app_package.bp_error.routes import bp_error
-    # from app_package.bp_admin.routes import bp_admin
 
     app.register_blueprint(bp_main)
     app.register_blueprint(bp_users)
-    # app.register_blueprint(bp_error)
-    # app.register_blueprint(bp_admin)
+
 
     return app
 
