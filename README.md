@@ -1,6 +1,6 @@
 # Flask Starter Website 01
 
-![Flask and DashAndData Logo](https://venturer.dashanddata.com/get_aux_file_from_dir/images/dd_and_flask.png)
+![Flask and DashAndData Logo](https://venturer.dashanddata.com/website_assets_images/dd_and_flask_02-400x209.png)
 
 ## Description
 This is the framework for the typical website I use.
